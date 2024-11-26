@@ -51,6 +51,7 @@ const AuthScreen = ({
         onChangeText={setEmail}
         placeholder="Email"
         autoCapitalize="none"
+        placeholderTextColor="#999"
       />
       <TextInput
         style={styles.input}
@@ -58,6 +59,7 @@ const AuthScreen = ({
         onChangeText={setPassword}
         placeholder="Password"
         secureTextEntry
+        placeholderTextColor="#999"
       />
       <View style={styles.buttonContainer}>
         <Button
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   authContainer: {
-    width: '60%',
+    width: '100%',
     maxWidth: 400,
     backgroundColor: 'pink',
     padding: 16,
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     width: '50%',
     height: 200,
     borderRadius: 8,
-    margin: 20,
+    margin: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
