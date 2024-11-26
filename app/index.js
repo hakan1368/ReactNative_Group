@@ -39,7 +39,9 @@ const AuthScreen = ({
 }) => {
   return (
     <View style={styles.authContainer}>
-      <Text style={styles.title}>{isLogin ? 'Sign In' : 'Sign Up'}</Text>
+      <Text style={styles.title}>
+        {isLogin ? 'Sign In to Linguini' : 'Sign Up to Linguini'}
+      </Text>
       <Image
         source={require('../assets/images/logo.png')}
         style={styles.image}
@@ -83,7 +85,13 @@ const AuthScreen = ({
 const AuthenticatedScreen = ({ user, handleAuthentication }) => {
   return (
     <View style={styles.authContainer}>
-      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.title}>Welcome to Linguini</Text>
+      <Text style={styles.secondTitle}>Ready to Learn a New Language ?</Text>
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={styles.image}
+      />
+      <Text style={styles.userText}>Logged in as:</Text>
       <Text style={styles.emailText}>{user.email}</Text>
       <Button title="Logout" onPress={handleAuthentication} color="#e74c3c" />
     </View>
@@ -168,9 +176,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     marginBottom: 16,
     textAlign: 'center',
+  },
+  secondTitle: {
+    fontSize: 24,
+    margin: 20,
+    textAlign: 'center',
+    color: 'white',
+  },
+  userText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   input: {
     height: 40,
