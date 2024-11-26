@@ -22,14 +22,14 @@ import ExploreScreen from '../pages/ExploreScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyB3KxWWO8Y7qcEZn9KaE1uUB834YNn6mI8',
-//   authDomain: 'fir-demo-ad6bf.firebaseapp.com',
-//   projectId: 'fir-demo-ad6bf',
-//   storageBucket: 'fir-demo-ad6bf.firebasestorage.app',
-//   messagingSenderId: '186861166199',
-//   appId: '1:186861166199:web:3f355b3043bb3079333072',
-// };
+const firebaseConfig = {
+  apiKey: 'AIzaSyADNyUaY2Ds1FCDQBo5UsSDEwqm7X7ra8I',
+  authDomain: 'fir-group-2f359.firebaseapp.com',
+  projectId: 'fir-group-2f359',
+  storageBucket: 'fir-group-2f359.firebasestorage.app',
+  messagingSenderId: '473311272073',
+  appId: '1:473311272073:web:93d7bd5c96ec841017fa58',
+};
 
 const app = initializeApp(firebaseConfig);
 
