@@ -7,7 +7,6 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-
 import { initializeApp } from '@firebase/app';
 import {
   getAuth,
@@ -16,11 +15,6 @@ import {
   onAuthStateChanged,
   signOut,
 } from '@firebase/auth';
-
-import WelcomeScreen from '../pages/WelcomeScreen';
-import ExploreScreen from '../pages/ExploreScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyADNyUaY2Ds1FCDQBo5UsSDEwqm7X7ra8I',
@@ -32,8 +26,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-const Stack = createStackNavigator();
 
 const AuthScreen = ({
   email,
@@ -81,10 +73,19 @@ const AuthScreen = ({
   );
 };
 
+const AuthenticatedScreen = ({ user, handleAuthentication }) => {
+  return (
+    <View style={styles.authContainer}>
+      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.emailText}>{user.email}</Text>
+      <Button title="Logout" onPress={handleAuthentication} color="#e74c3c" />
+    </View>
+  );
+};
 export default App = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Track user authentication state
   const [isLogin, setIsLogin] = useState(true);
 
   const auth = getAuth(app);
@@ -120,48 +121,31 @@ export default App = () => {
   };
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {user ? (
-          // If user is authenticated, show Welcome and Explore screens
-          <>
-            <Stack.Screen name="Welcome">
-              {(props) => (
-                <WelcomeScreen
-                  {...props}
-                  user={user}
-                  handleAuthentication={() => auth.signOut()}
-                />
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Explore" component={ExploreScreen} />
-          </>
-        ) : (
-          // If user is not authenticated, show AuthScreen only
-          <Stack.Screen name="Auth">
-            {(props) => (
-              <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <AuthScreen
-                  {...props}
-                  email={email}
-                  setEmail={setEmail}
-                  password={password}
-                  setPassword={setPassword}
-                  isLogin={isLogin}
-                  setIsLogin={setIsLogin}
-                  handleAuthentication={handleAuthentication}
-                />
-              </ScrollView>
-            )}
-          </Stack.Screen>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ScrollView contentContainerStyle={styles.container}>
+      {user ? (
+        // Show user's email if user is authenticated
+        <AuthenticatedScreen
+          user={user}
+          handleAuthentication={handleAuthentication}
+        />
+      ) : (
+        // Show sign-in or sign-up form if user is not authenticated
+        <AuthScreen
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          isLogin={isLogin}
+          setIsLogin={setIsLogin}
+          handleAuthentication={handleAuthentication}
+        />
+      )}
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
@@ -190,12 +174,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginBottom: 16,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
   },
   toggleText: {
     color: '#3498db',
