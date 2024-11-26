@@ -6,6 +6,7 @@ import {
   Button,
   StyleSheet,
   ScrollView,
+  Image,
 } from 'react-native';
 import { initializeApp } from '@firebase/app';
 import {
@@ -39,6 +40,10 @@ const AuthScreen = ({
   return (
     <View style={styles.authContainer}>
       <Text style={styles.title}>{isLogin ? 'Sign In' : 'Sign Up'}</Text>
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={styles.image}
+      />
 
       <TextInput
         style={styles.input}
@@ -152,12 +157,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   authContainer: {
-    width: '80%',
+    width: '60%',
     maxWidth: 400,
-    backgroundColor: '#fff',
+    backgroundColor: 'pink',
     padding: 16,
     borderRadius: 8,
     elevation: 3,
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -168,12 +174,15 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#ddd',
     borderWidth: 1,
+    backgroundColor: 'white',
     marginBottom: 16,
     padding: 8,
     borderRadius: 4,
+    width: '100%',
   },
   buttonContainer: {
     marginBottom: 16,
+    width: '50%',
   },
   toggleText: {
     color: '#3498db',
@@ -181,6 +190,14 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     marginTop: 20,
+  },
+  image: {
+    width: '50%',
+    height: 200,
+    borderRadius: 8,
+    margin: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   emailText: {
     fontSize: 18,
