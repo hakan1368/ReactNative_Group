@@ -85,7 +85,7 @@ const AuthenticatedScreen = ({ user, handleAuthentication }) => {
 export default App = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null); // Track user authentication state
+  const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
 
   const auth = getAuth(app);
