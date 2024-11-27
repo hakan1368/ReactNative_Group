@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
-import { initializeApp } from '@firebase/app';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from 'react-native';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from '@firebase/auth';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { useRouter } from 'expo-router';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from '@firebase/auth';
-import WelcomeScreen from './Splash_screen.js'; // Your Splash Screen Component
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyADNyUaY2Ds1FCDQBo5UsSDEwqm7X7ra8I',
-  authDomain: 'fir-group-2f359.firebaseapp.com',
-  projectId: 'fir-group-2f359',
-  storageBucket: 'fir-group-2f359.firebasestorage.app',
-  messagingSenderId: '473311272073',
-  appId: '1:473311272073:web:93d7bd5c96ec841017fa58',
-};
+import welcome from './welcome';
 
-const app = initializeApp(firebaseConfig);
+import { app } from './firebase';
+
+const Stack = createStackNavigator();
+const router = useRouter();
 
 const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogin, handleAuthentication }) => {
   const router = useRouter(); // useRouter for navigation
@@ -59,15 +69,22 @@ const AuthenticatedScreen = ({ user, handleAuthentication }) => {
   return (
     <View style={styles.authContainer}>
       <Text style={styles.title}>Welcome to Linguini</Text>
-      <Text style={styles.secondTitle}>Ready to Learn a New Language?</Text>
-      <Image source={require('../assets/images/logo.webp')} style={styles.image} />
+      <Text style={styles.secondTitle}>Ready to Learn a New Language ?</Text>
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={styles.image}
+      />
+      <Button
+        title="Go Home"
+        color={'#3498db'}
+        onPress={() => router.push('/welcome')}
+      ></Button>
       <Text style={styles.userText}>Logged in as:</Text>
       <Text style={styles.emailText}>{user.email}</Text>
       <Button title="Logout" onPress={() => { handleAuthentication(); router.push('/Splash_screen'); }} color="#e74c3c" />
     </View>
   );
 };
-
 export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -125,7 +142,6 @@ export default function App() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   authContainer: {
     width: '100%',
