@@ -8,7 +8,6 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { initializeApp } from '@firebase/app';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -16,17 +15,16 @@ import {
   onAuthStateChanged,
   signOut,
 } from '@firebase/auth';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useRouter } from 'expo-router';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyADNyUaY2Ds1FCDQBo5UsSDEwqm7X7ra8I',
-  authDomain: 'fir-group-2f359.firebaseapp.com',
-  projectId: 'fir-group-2f359',
-  storageBucket: 'fir-group-2f359.firebasestorage.app',
-  messagingSenderId: '473311272073',
-  appId: '1:473311272073:web:93d7bd5c96ec841017fa58',
-};
+import welcome from './welcome';
 
-const app = initializeApp(firebaseConfig);
+import { app } from './firebase';
+
+const Stack = createStackNavigator();
+const router = useRouter();
 
 const AuthScreen = ({
   email,
@@ -91,13 +89,18 @@ const AuthenticatedScreen = ({ user, handleAuthentication }) => {
         source={require('../assets/images/logo.png')}
         style={styles.image}
       />
+      <Button
+        title="Go Home"
+        color={'#3498db'}
+        onPress={() => router.push('/welcome')}
+      ></Button>
       <Text style={styles.userText}>Logged in as:</Text>
       <Text style={styles.emailText}>{user.email}</Text>
       <Button title="Logout" onPress={handleAuthentication} color="#e74c3c" />
     </View>
   );
 };
-export default App = () => {
+export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
@@ -157,7 +160,7 @@ export default App = () => {
       )}
     </ScrollView>
   );
-};
+}
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
