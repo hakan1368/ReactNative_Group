@@ -1,7 +1,7 @@
 import { initializeApp } from '@firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: 'AIzaSyADNyUaY2Ds1FCDQBo5UsSDEwqm7X7ra8I',
   authDomain: 'fir-group-2f359.firebaseapp.com',
   projectId: 'fir-group-2f359',

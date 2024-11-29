@@ -19,12 +19,11 @@ export default function Home() {
     };
 
     try {
+      router.push('./quiz');
       await addDoc(ref, data);
       console.log('Document succesfully written.');
-      setDisplayMessage('Saved successfully into database.');
       setNameValue('');
       setMessageValue('');
-      router.push({ pathname: './quiz', params: { name: nameValue } });
     } catch (error) {
       console.log(error);
       setDisplayMessage('Error saving into database.');
@@ -38,7 +37,7 @@ export default function Home() {
         source={require('../assets/images/logo.png')}
         style={styles.image}
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Enter your name.."
         value={nameValue}
@@ -49,7 +48,7 @@ export default function Home() {
         placeholder="Enter your message.."
         value={messageValue}
         onChangeText={setMessageValue}
-      ></TextInput>
+      ></TextInput> */}
       <Button title="Start" onPress={handleSubmit} color="#e74c3c"></Button>
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>

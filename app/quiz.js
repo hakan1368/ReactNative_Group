@@ -12,48 +12,15 @@ export default function Home() {
 
   const ref = collection(firestore, 'messages');
   const router = useRouter();
-  const { name } = useSearchParams();
-
-  const handleSubmit = async () => {
-    const data = {
-      name: nameValue,
-      message: messageValue,
-    };
-
-    try {
-      await addDoc(ref, data);
-      console.log('Document succesfully written.');
-      setDisplayMessage('Saved successfully into database.');
-      setNameValue('');
-      setMessageValue('');
-      console.log(name);
-    } catch (error) {
-      console.log(error);
-      setDisplayMessage('Error saving into database.');
-    }
-  };
 
   return (
     <View style={styles.authContainer}>
       <Text style={styles.title}>Learn Finnish Today !</Text>
-      {name && <Text style={styles.title}>{name}</Text>}
       <Image
         source={require('../assets/images/logo.png')}
         style={styles.image}
       />
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Enter your name.."
-        value={nameValue}
-        onChangeText={setNameValue}
-      ></TextInput>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your message.."
-        value={messageValue}
-        onChangeText={setMessageValue}
-      ></TextInput> */}
-      <Button title="Start" onPress={handleSubmit} color="#e74c3c"></Button>
+      {/* <Button title="Start" color="#e74c3c"></Button> */}
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>
       ) : null}
