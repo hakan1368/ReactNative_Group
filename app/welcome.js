@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <View style={styles.authContainer}>
-      <Text style={styles.title}>Form Testing</Text>
+      <Text style={styles.title}>Ready to Start Learning ?</Text>
       <Image
         source={require('../assets/images/logo.png')}
         style={styles.image}
@@ -49,7 +49,7 @@ export default function Home() {
         value={messageValue}
         onChangeText={setMessageValue}
       ></TextInput>
-      <Button title="Submit" onPress={handleSubmit} color="#e74c3c"></Button>
+      <Button title="Start" onPress={handleSubmit} color="#e74c3c"></Button>
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>
       ) : null}
