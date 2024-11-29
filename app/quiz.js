@@ -3,6 +3,7 @@ import { firestore } from './firebase';
 import { addDoc, collection } from '@firebase/firestore';
 import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSearchParams } from 'expo-router/build/hooks';
 
 export default function Home() {
   const [nameValue, setNameValue] = useState('');
@@ -11,6 +12,7 @@ export default function Home() {
 
   const ref = collection(firestore, 'messages');
   const router = useRouter();
+  const { name } = useSearchParams();
 
   const handleSubmit = async () => {
     const data = {
@@ -24,7 +26,7 @@ export default function Home() {
       setDisplayMessage('Saved successfully into database.');
       setNameValue('');
       setMessageValue('');
-      router.push({ pathname: './quiz', params: { name: nameValue } });
+      console.log(name);
     } catch (error) {
       console.log(error);
       setDisplayMessage('Error saving into database.');
@@ -33,12 +35,13 @@ export default function Home() {
 
   return (
     <View style={styles.authContainer}>
-      <Text style={styles.title}>Ready to Start Learning ?</Text>
+      <Text style={styles.title}>Learn Finnish Today !</Text>
+      {name && <Text style={styles.title}>{name}</Text>}
       <Image
         source={require('../assets/images/logo.png')}
         style={styles.image}
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Enter your name.."
         value={nameValue}
@@ -49,7 +52,7 @@ export default function Home() {
         placeholder="Enter your message.."
         value={messageValue}
         onChangeText={setMessageValue}
-      ></TextInput>
+      ></TextInput> */}
       <Button title="Start" onPress={handleSubmit} color="#e74c3c"></Button>
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>
