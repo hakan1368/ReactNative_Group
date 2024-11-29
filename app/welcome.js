@@ -1,24 +1,42 @@
 import React, { useRef, useState } from 'react';
 import { firestore } from './firebase';
 import { addDoc, collection } from '@firebase/firestore';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Home() {
-  const messageRef = useRef();
-  const ref = collection(firestore, 'message');
   const [nameValue, setNameValue] = useState('');
   const [messageValue, setMessageValue] = useState('');
+  const [displayMessage, setDisplayMessage] = useState('');
 
+  const ref = collection(firestore, 'messages');
   const router = useRouter();
 
-  const handleSubmit = () => {
-    console.log('The value you entered is: ' + nameValue + messageValue);
+  const handleSubmit = async () => {
+    const data = {
+      name: nameValue,
+      message: messageValue,
+    };
+
+    try {
+      await addDoc(ref, data);
+      console.log('Document succesfully written.');
+      setDisplayMessage('Saved successfully into database.');
+      setNameValue('');
+      setMessageValue('');
+    } catch (error) {
+      console.log(error);
+      setDisplayMessage('Error saving into database.');
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.authContainer}>
       <Text style={styles.title}>Form Testing</Text>
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={styles.image}
+      />
       <TextInput
         style={styles.input}
         placeholder="Enter your name.."
@@ -32,6 +50,9 @@ export default function Home() {
         onChangeText={setMessageValue}
       ></TextInput>
       <Button title="Submit" onPress={handleSubmit} color="#e74c3c"></Button>
+      {displayMessage ? (
+        <Text style={styles.message}>{displayMessage}</Text>
+      ) : null}
     </View>
   );
 }
@@ -55,7 +76,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginBottom: 16,
+    marginBottom: 12,
     textAlign: 'center',
   },
   secondTitle: {
@@ -101,5 +122,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginBottom: 20,
+  },
+  message: {
+    marginTop: 16,
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'green',
   },
 });
