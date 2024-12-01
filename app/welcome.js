@@ -37,18 +37,10 @@ export default function Home() {
         source={require('../assets/images/logo.png')}
         style={styles.image}
       />
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Enter your name.."
-        value={nameValue}
-        onChangeText={setNameValue}
-      ></TextInput>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your message.."
-        value={messageValue}
-        onChangeText={setMessageValue}
-      ></TextInput> */}
+      <Text style={styles.secondTitle}>
+        We aim to teach a new language by practising new words on our Quiz App.
+        Start whenever you feel ready and discover your potential today.
+      </Text>
       <Button title="Start" onPress={handleSubmit} color="#e74c3c"></Button>
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>
@@ -81,7 +73,7 @@ const styles = StyleSheet.create({
   },
   secondTitle: {
     fontSize: 24,
-    margin: 20,
+    margin: 25,
     textAlign: 'center',
     color: 'white',
   },

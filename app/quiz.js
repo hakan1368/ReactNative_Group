@@ -1,103 +1,144 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { firestore } from './firebase';
-import { addDoc, collection } from '@firebase/firestore';
-import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useSearchParams } from 'expo-router/build/hooks';
+import { collection, getDocs } from '@firebase/firestore';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Button,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 
-export default function Home() {
-  const [nameValue, setNameValue] = useState('');
-  const [messageValue, setMessageValue] = useState('');
-  const [displayMessage, setDisplayMessage] = useState('');
+export default function QuizPage() {
+  const [questions, setQuestions] = useState([]);
+  const [currentAnswers, setCurrentAnswers] = useState({});
+  const [score, setScore] = useState(null);
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
 
-  const ref = collection(firestore, 'questions');
-  const router = useRouter();
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const ref = collection(firestore, 'questions');
+      const querySnapshot = await getDocs(ref);
+      const fetchedQuestions = querySnapshot.docs.map((doc) => doc.data());
+      setQuestions(fetchedQuestions);
+    };
+
+    fetchQuestions();
+  }, []);
+
+  const handleOptionSelect = (questionIndex, selectedOption) => {
+    setCurrentAnswers((prev) => ({
+      ...prev,
+      [questionIndex]: selectedOption,
+    }));
+  };
+
+  const handleSubmit = () => {
+    let calculatedScore = 0;
+    questions.forEach((question, index) => {
+      if (currentAnswers[index] === question.correct) {
+        calculatedScore += 1;
+      }
+    });
+    setScore(calculatedScore);
+    setQuizSubmitted(true);
+  };
 
   return (
-    <View style={styles.authContainer}>
-      <Text style={styles.title}>Learn Finnish Today !</Text>
-      <Image
-        source={require('../assets/images/logo.png')}
-        style={styles.image}
-      />
-      {/* <Button title="Start" color="#e74c3c"></Button> */}
-      {displayMessage ? (
-        <Text style={styles.message}>{displayMessage}</Text>
-      ) : null}
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Finnish Quiz</Text>
+      {quizSubmitted ? (
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText}>
+            Your Score: {score} / {questions.length}
+          </Text>
+          <Button
+            title="Retry Quiz"
+            onPress={() => {
+              setCurrentAnswers({});
+              setScore(null);
+              setQuizSubmitted(false);
+            }}
+          />
+        </View>
+      ) : (
+        questions.map((question, index) => (
+          <View key={index} style={styles.questionContainer}>
+            <Text style={styles.questionTitle}>
+              {index + 1}. {question.title}
+            </Text>
+            {question.options.map((option, optionIndex) => (
+              <TouchableOpacity
+                key={optionIndex}
+                style={[
+                  styles.optionButton,
+                  currentAnswers[index] === option ? styles.selectedOption : {},
+                ]}
+                onPress={() => handleOptionSelect(index, option)}
+              >
+                <Text style={styles.optionText}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))
+      )}
+      {!quizSubmitted && (
+        <Button
+          title="Submit Quiz"
+          onPress={handleSubmit}
+          disabled={Object.keys(currentAnswers).length !== questions.length}
+        />
+      )}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f0f0f0',
-  },
-  authContainer: {
-    width: '100%',
-    maxWidth: 400,
-    backgroundColor: 'pink',
-    padding: 16,
-    borderRadius: 8,
-    elevation: 3,
-    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
   },
   title: {
-    fontSize: 30,
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  secondTitle: {
     fontSize: 24,
-    margin: 20,
-    textAlign: 'center',
-    color: 'white',
-  },
-  userText: {
-    fontSize: 18,
     fontWeight: 'bold',
-  },
-  input: {
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    backgroundColor: 'white',
-    marginBottom: 16,
-    padding: 8,
-    borderRadius: 4,
-    width: '100%',
-  },
-  buttonContainer: {
-    marginBottom: 16,
-    width: '50%',
-  },
-  toggleText: {
-    color: '#3498db',
     textAlign: 'center',
+    marginBottom: 16,
   },
-  bottomContainer: {
+  questionContainer: {
+    marginBottom: 20,
+    padding: 16,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  questionTitle: {
+    fontSize: 18,
+    marginBottom: 8,
+  },
+  optionButton: {
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: '#e9ecef',
+    borderRadius: 4,
+  },
+  selectedOption: {
+    backgroundColor: '#6c757d',
+  },
+  optionText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  resultContainer: {
+    alignItems: 'center',
     marginTop: 20,
   },
-  image: {
-    width: '50%',
-    height: 200,
-    borderRadius: 8,
-    margin: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emailText: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  message: {
-    marginTop: 16,
-    fontSize: 16,
-    textAlign: 'center',
-    color: 'green',
+  resultText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
 });
