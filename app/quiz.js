@@ -10,7 +10,7 @@ export default function Home() {
   const [messageValue, setMessageValue] = useState('');
   const [displayMessage, setDisplayMessage] = useState('');
 
-  const ref = collection(firestore, 'messages');
+  const ref = collection(firestore, 'questions');
   const router = useRouter();
 
   return (
