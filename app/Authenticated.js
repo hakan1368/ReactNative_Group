@@ -1,48 +1,62 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
-import SplashScreen from './Splash_screen'; // Import du SplashScreen
-import AuthScreen from './index';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 
 const AuthenticatedScreen = ({ email, handleSignOut, navigateHome }) => {
   const router = useRouter();
 
   return (
-    <View style={styles.authContainer}>
-      <Text style={styles.title}>Welcome to Linguini</Text>
-      <Text style={styles.secondTitle}>Ready to Learn a New Language?</Text>
-      <Image
-        source={require('../assets/images/logo.png')} // Assurez-vous que le chemin est correct
+    <View style={styles.container}>
+         <Image
+        source={require('../assets/images/logo.webp')}
         style={styles.image}
       />
-      <Button
-        title="Go Home"
-        color="#3498db"
-        onPress={() => router.push('/welcome')} // Naviguer vers l'écran d'accueil
-      />
-      <Text style={styles.userText}>Logged in as:</Text>
-      <Text style={styles.emailText}>
-        {email || 'Email not available'}{' '}
-      </Text>{' '}
-      {/* Afficher l'email de l'utilisateur */}
-      <Button
-        title="Logout"
-        onPress={handleSignOut} // Appeler la fonction de déconnexion
-        color="#e74c3c"
-      />
+      <View style={styles.authContainer}>
+  
+        <Text style={styles.userText}>Logged in as:</Text>
+        <Text style={styles.emailText}>
+          {email || 'Email not available'}
+        </Text>
+        {/* Afficher l'email de l'utilisateur */}
+   
+      </View>
+   
+
+      {/* Bottom bar */}
+      <View style={styles.bottomBar}>
+        <TouchableOpacity onPress={() => router.push('/welcome')} style={styles.button}>
+          <Image
+            source={require('../assets/images/home_menu.svg')} // Home button icon
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+          <Image
+            source={require('../assets/images/log_out_button.svg')} // Logout button icon
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+        {/* Ajoute d'autres icônes si nécessaire */}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  authContainer: {
-    width: '100%',
-    maxWidth: 400,
+  container: {
+   
+    alignItems: 'center',
+    justifyContent: 'space-between', // Permet au bas de rester en bas
     backgroundColor: 'pink',
+  },
+  authContainer: {
+    
+    width: '300%',
     padding: 16,
     borderRadius: 8,
     elevation: 3,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 30,
@@ -62,11 +76,29 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   image: {
-    width: '50%',
+    width: '60%',
     height: 200,
     borderRadius: 8,
     margin: 50,
   },
+  bottomBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly', // Espacement égal entre les icônes
+    width: '100%',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    backgroundColor: '#D3D3D3', // Ajuste la couleur de fond comme tu préfères
+  },
+  icon: {
+    width: 24, // Ajuste la taille de l'icône
+    height: 24,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
 });
 
 export default AuthenticatedScreen;
