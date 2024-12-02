@@ -1,32 +1,27 @@
 import React, { useRef, useState } from 'react';
-import { firestore } from './firebase';
-import { addDoc, collection } from '@firebase/firestore';
 import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Home() {
-  const [nameValue, setNameValue] = useState('');
-  const [messageValue, setMessageValue] = useState('');
   const [displayMessage, setDisplayMessage] = useState('');
-
-  const ref = collection(firestore, 'messages');
+  // const ref = collection(firestore, 'messages');
   const router = useRouter();
 
-  const handleSubmit = async () => {
-    const data = {
-      name: nameValue,
-      message: messageValue,
-    };
-
+  const handleTestKnowledge = async () => {
     try {
       router.push('./quiz');
-      await addDoc(ref, data);
-      console.log('Document succesfully written.');
-      setNameValue('');
-      setMessageValue('');
     } catch (error) {
       console.log(error);
-      setDisplayMessage('Error saving into database.');
+      setDisplayMessage('Error');
+    }
+  };
+
+  const handleLearnNow = async () => {
+    try {
+      router.push('./learn');
+    } catch (error) {
+      console.log(error);
+      setDisplayMessage('Error');
     }
   };
 
@@ -41,7 +36,19 @@ export default function Home() {
         We aim to teach a new language by practising new words on our Quiz App.
         Start whenever you feel ready and discover your potential today.
       </Text>
-      <Button title="Start" onPress={handleSubmit} color="#e74c3c"></Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Learn Now"
+          onPress={handleLearnNow}
+          color="#e74c3c"
+        ></Button>
+        <Button
+          title="Test Knowledge"
+          onPress={handleTestKnowledge}
+          color="#e74c3c"
+        ></Button>
+      </View>
+
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>
       ) : null}
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   },
   secondTitle: {
     fontSize: 24,
-    margin: 25,
+    margin: 15,
     textAlign: 'center',
     color: 'white',
   },
@@ -92,8 +99,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonContainer: {
-    marginBottom: 16,
-    width: '50%',
+    flexGrow: 1,
+    gap: 10,
+    alignContent: 'space-evenly',
   },
   toggleText: {
     color: '#3498db',
@@ -106,7 +114,7 @@ const styles = StyleSheet.create({
     width: '50%',
     height: 200,
     borderRadius: 8,
-    margin: 50,
+    margin: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },

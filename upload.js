@@ -6,11 +6,11 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
-const data = require('./data.json');
+const data = require('./data_learn.json');
 
 async function uploadData() {
   for (const doc of data) {
-    await db.collection('questions').add(doc);
+    await db.collection('cards').add(doc);
   }
 }
 
