@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 const SplashScreen = () => {
   return (
@@ -17,26 +17,28 @@ const SplashScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',  // Centers the content vertically
-    alignItems: 'center',      // Centers the content horizontally
-    backgroundColor: 'pink', // Same background color as AuthScreen
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'pink',
+    maxHeight: 600,
+    maxWidth: 500,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: 'black',  // Same blue color as in AuthScreen
-    marginBottom: 10,  // Spacing below the title
+    color: 'black', // Same blue color as in AuthScreen
+    marginBottom: 10, // Spacing below the title
   },
   subtitle: {
     fontSize: 18,
-    color: '#777',  // Light gray color for the subtitle
+    color: '#777', // Light gray color for the subtitle
   },
-  image : {
+  image: {
     width: '50%',
     height: 200,
     borderRadius: 8,
-    margin: 50
-  }
+    margin: 50,
+  },
 });
 
 export default SplashScreen;
