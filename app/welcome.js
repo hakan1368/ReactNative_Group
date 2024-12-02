@@ -1,37 +1,50 @@
 import React, { useRef, useState } from 'react';
 import { firestore } from './firebase';
 import { addDoc, collection } from '@firebase/firestore';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Home() {
-  const messageRef = useRef();
-  const ref = collection(firestore, 'message');
   const [nameValue, setNameValue] = useState('');
   const [messageValue, setMessageValue] = useState('');
+  const [displayMessage, setDisplayMessage] = useState('');
 
+  const ref = collection(firestore, 'messages');
   const router = useRouter();
 
-  const handleSubmit = () => {
-    console.log('The value you entered is: ' + nameValue + messageValue);
+  const handleSubmit = async () => {
+    const data = {
+      name: nameValue,
+      message: messageValue,
+    };
+
+    try {
+      router.push('./quiz');
+      await addDoc(ref, data);
+      console.log('Document succesfully written.');
+      setNameValue('');
+      setMessageValue('');
+    } catch (error) {
+      console.log(error);
+      setDisplayMessage('Error saving into database.');
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Form Testing</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your name.."
-        value={nameValue}
-        onChangeText={setNameValue}
-      ></TextInput>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your message.."
-        value={messageValue}
-        onChangeText={setMessageValue}
-      ></TextInput>
-      <Button title="Submit" onPress={handleSubmit} color="#e74c3c"></Button>
+    <View style={styles.authContainer}>
+      <Text style={styles.title}>Ready to Start Learning ?</Text>
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={styles.image}
+      />
+      <Text style={styles.secondTitle}>
+        We aim to teach a new language by practising new words on our Quiz App.
+        Start whenever you feel ready and discover your potential today.
+      </Text>
+      <Button title="Start" onPress={handleSubmit} color="#e74c3c"></Button>
+      {displayMessage ? (
+        <Text style={styles.message}>{displayMessage}</Text>
+      ) : null}
     </View>
   );
 }
@@ -55,12 +68,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginBottom: 16,
+    marginBottom: 12,
     textAlign: 'center',
   },
   secondTitle: {
     fontSize: 24,
-    margin: 20,
+    margin: 25,
     textAlign: 'center',
     color: 'white',
   },
@@ -101,5 +114,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginBottom: 20,
+  },
+  message: {
+    marginTop: 16,
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'green',
   },
 });

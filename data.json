@@ -1,0 +1,62 @@
+[
+  {
+    "title": "What is the Finnish word for 'Hello'?",
+    "difficulty": "Easy",
+    "options": ["Moi", "Kiitos", "Anteeksi", "Kyllä"],
+    "correct": "Moi"
+  },
+  {
+    "title": "How do you say 'Thank you' in Finnish?",
+    "difficulty": "Easy",
+    "options": ["Kiitos", "Moi", "Hyvää huomenta", "Anteeksi"],
+    "correct": "Kiitos"
+  },
+  {
+    "title": "What is the Finnish word for 'Water'?",
+    "difficulty": "Medium",
+    "options": ["Vesi", "Talo", "Puisto", "Ilma"],
+    "correct": "Vesi"
+  },
+  {
+    "title": "What does 'Hyvää huomenta' mean in English?",
+    "difficulty": "Medium",
+    "options": ["Good night", "Good morning", "Good evening", "Good afternoon"],
+    "correct": "Good morning"
+  },
+  {
+    "title": "How do you say 'Goodbye' in Finnish?",
+    "difficulty": "Easy",
+    "options": ["Heippa", "Moi", "Kyllä", "Ei"],
+    "correct": "Heippa"
+  },
+  {
+    "title": "What does 'Sataa' mean in Finnish?",
+    "difficulty": "Hard",
+    "options": ["Rain", "Snow", "Cloud", "Wind"],
+    "correct": "Rain"
+  },
+  {
+    "title": "Which Finnish word means 'Cat'?",
+    "difficulty": "Medium",
+    "options": ["Koira", "Kissa", "Kala", "Hevonen"],
+    "correct": "Kissa"
+  },
+  {
+    "title": "What is the Finnish word for 'House'?",
+    "difficulty": "Easy",
+    "options": ["Talo", "Kaupunki", "Puisto", "Tie"],
+    "correct": "Talo"
+  },
+  {
+    "title": "How do you say 'Yes' in Finnish?",
+    "difficulty": "Easy",
+    "options": ["Kyllä", "Ei", "Hei", "Joo"],
+    "correct": "Kyllä"
+  },
+  {
+    "title": "What does 'Minä rakastan sinua' mean?",
+    "difficulty": "Hard",
+    "options": ["I like you", "I hate you", "I love you", "I see you"],
+    "correct": "I love you"
+  }
+]
