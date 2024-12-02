@@ -2,7 +2,11 @@ import React from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import SplashScreen from './Splash_screen'; // Import du SplashScreen
 import AuthScreen from './index';
+import { useRouter } from 'expo-router';
+
 const AuthenticatedScreen = ({ email, handleSignOut, navigateHome }) => {
+  const router = useRouter();
+
   return (
     <View style={styles.authContainer}>
       <Text style={styles.title}>Welcome to Linguini</Text>
@@ -14,10 +18,13 @@ const AuthenticatedScreen = ({ email, handleSignOut, navigateHome }) => {
       <Button
         title="Go Home"
         color="#3498db"
-        onPress={navigateHome} // Naviguer vers l'écran d'accueil
+        onPress={() => router.push('/welcome')} // Naviguer vers l'écran d'accueil
       />
       <Text style={styles.userText}>Logged in as:</Text>
-      <Text style={styles.emailText}>{email || 'Email not available'} </Text> {/* Afficher l'email de l'utilisateur */}
+      <Text style={styles.emailText}>
+        {email || 'Email not available'}{' '}
+      </Text>{' '}
+      {/* Afficher l'email de l'utilisateur */}
       <Button
         title="Logout"
         onPress={handleSignOut} // Appeler la fonction de déconnexion
