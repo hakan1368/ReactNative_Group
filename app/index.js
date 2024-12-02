@@ -1,45 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  ScrollView,
-  Image,
-} from 'react-native';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from '@firebase/auth';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text, StyleSheet, TextInput,Button,Image } from 'react-native';
+import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@firebase/auth';
 import { useRouter } from 'expo-router';
-
-import welcome from './welcome';
-
 import { app } from './firebase';
-
-const Stack = createStackNavigator();
-const router = useRouter();
+import AuthenticatedScreen from './Authenticated';
+import SplashScreen from './Splash_screen'; // Import du SplashScreen
 
 const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogin, handleAuthentication }) => {
-  const router = useRouter(); // useRouter for navigation
-
-  // Navigate to authenticated screen after successful auth
-  const handleAuth = async () => {
-    await handleAuthentication(); // Trigger authentication
-    router.push('/authenticated'); // Navigate to the authenticated screen
-  };
-
   return (
     <View style={styles.authContainer}>
-      <Text style={styles.title}>{isLogin ? 'Sign In to Linguini' : 'Sign Up to Linguini'}</Text>
-      <Image source={require('../assets/images/logo.webp')} style={styles.image} />
-
+      <Text style={styles.title}>
+        {isLogin ? 'Sign In to Linguini' : 'Sign Up to Linguini'}
+      </Text>
+      <Image
+        source={require('../assets/images/logo.webp')}
+        style={styles.image}
+      />
       <TextInput
         style={styles.input}
         value={email}
@@ -54,75 +30,68 @@ const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogi
         placeholder="Password"
         secureTextEntry
       />
-      <View style={styles.buttonContainer}>
-        <Button title={isLogin ? 'Sign In' : 'Sign Up'} onPress={handleAuth} color="#3498db" />
-      </View>
-      <Text style={styles.toggleText} onPress={() => setIsLogin(!isLogin)}>
+      <Button
+        title={isLogin ? 'Sign In' : 'Sign Up'}
+        onPress={handleAuthentication}
+        color="#3498db"
+      />
+      <Text onPress={() => setIsLogin(!isLogin)}>
         {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
       </Text>
     </View>
   );
 };
 
-const AuthenticatedScreen = ({ user, handleAuthentication }) => {
-  const router = useRouter();
-  return (
-    <View style={styles.authContainer}>
-      <Text style={styles.title}>Welcome to Linguini</Text>
-      <Text style={styles.secondTitle}>Ready to Learn a New Language ?</Text>
-      <Image
-        source={require('../assets/images/logo.png')}
-        style={styles.image}
-      />
-      <Button
-        title="Go Home"
-        color={'#3498db'}
-        onPress={() => router.push('/welcome')}
-      ></Button>
-      <Text style={styles.userText}>Logged in as:</Text>
-      <Text style={styles.emailText}>{user.email}</Text>
-      <Button title="Logout" onPress={() => { handleAuthentication(); router.push('/Splash_screen'); }} color="#e74c3c" />
-    </View>
-  );
-};
 export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
+  const [loadingSplash, setLoadingSplash] = useState(false); // État pour afficher SplashScreen après login
   const auth = getAuth(app);
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setLoadingSplash(true); // Afficher SplashScreen lorsque l'utilisateur est connecté
+      } else {
+        setUser(null);
+      }
     });
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error('Error signing out:', error.message);
+    }
+  };
 
   const handleAuthentication = async () => {
     try {
-      if (user) {
-        // If user is already authenticated, log out
-        await signOut(auth);
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
       } else {
-        if (isLogin) {
-          await signInWithEmailAndPassword(auth, email, password);
-          console.log('connected');
-        } else {
-          await createUserWithEmailAndPassword(auth, email, password);
-          console.log('created');
-        }
+        await createUserWithEmailAndPassword(auth, email, password);
       }
     } catch (error) {
       console.error('Authentication error:', error.message);
     }
   };
 
-  // If user is authenticated, navigate to Authenticated screen
-  if (user) {
-    router.push('/authenticated'); // Navigate to the authenticated screen if logged in
-  }
+  useEffect(() => {
+    if (loadingSplash) {
+      // Si SplashScreen doit s'afficher, attendre 3 secondes
+      setTimeout(() => {
+        setLoadingSplash(false); // Cacher SplashScreen après 3 secondes
+      }, 3000);
+    }
+  }, [loadingSplash]);
 
   return (
     <View style={styles.container}>
@@ -136,15 +105,28 @@ export default function App() {
           setIsLogin={setIsLogin}
           handleAuthentication={handleAuthentication}
         />
+      ) : loadingSplash ? (
+        <SplashScreen /> // Afficher le SplashScreen pendant 3 secondes
       ) : (
-        <AuthenticatedScreen user={user} handleAuthentication={handleAuthentication} />
+        <AuthenticatedScreen
+          email={user?.email}
+          user={user}
+          handleSignOut={handleSignOut}
+        />
       )}
     </View>
   );
 }
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f7f7f7',
+  },
   authContainer: {
-    width: '100%',
+    width: '90%',
     maxWidth: 400,
     backgroundColor: 'pink',
     padding: 16,
@@ -153,7 +135,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 16,
   },
   input: {
@@ -165,14 +148,6 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
     width: '100%',
-  },
-  buttonContainer: {
-    marginBottom: 16,
-    width: '50%',
-  },
-  toggleText: {
-    color: '#3498db',
-    textAlign: 'center',
   },
   image: {
     width: '50%',
