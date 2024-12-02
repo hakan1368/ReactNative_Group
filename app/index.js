@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput,Button,Image } from 'react-native';
-import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@firebase/auth';
+import { View, Text, StyleSheet, TextInput, Button, Image } from 'react-native';
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from '@firebase/auth';
 import { useRouter } from 'expo-router';
 import { app } from './firebase';
 import AuthenticatedScreen from './Authenticated';
 import SplashScreen from './Splash_screen'; // Import du SplashScreen
 
-const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogin, handleAuthentication }) => {
+const AuthScreen = ({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  isLogin,
+  setIsLogin,
+  handleAuthentication,
+}) => {
   return (
     <View style={styles.authContainer}>
       <Text style={styles.title}>
@@ -36,7 +50,9 @@ const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogi
         color="#3498db"
       />
       <Text onPress={() => setIsLogin(!isLogin)}>
-        {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
+        {isLogin
+          ? 'Need an account? Sign Up'
+          : 'Already have an account? Sign In'}
       </Text>
     </View>
   );
@@ -94,7 +110,7 @@ export default function App() {
   }, [loadingSplash]);
 
   return (
-    <View style={styles.container}>
+    <View>
       {!user ? (
         <AuthScreen
           email={email}
@@ -119,19 +135,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f7f7f7',
-  },
   authContainer: {
-    width: '90%',
+    width: '100%',
     maxWidth: 400,
     backgroundColor: 'pink',
     padding: 16,
     borderRadius: 8,
     elevation: 3,
+    flex: 1,
     alignItems: 'center',
   },
   title: {

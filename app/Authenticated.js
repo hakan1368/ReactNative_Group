@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 
 const AuthenticatedScreen = ({ email, handleSignOut, navigateHome }) => {
@@ -7,24 +14,22 @@ const AuthenticatedScreen = ({ email, handleSignOut, navigateHome }) => {
 
   return (
     <View style={styles.container}>
-         <Image
+      <Image
         source={require('../assets/images/logo.webp')}
         style={styles.image}
       />
       <View style={styles.authContainer}>
-  
         <Text style={styles.userText}>Logged in as:</Text>
-        <Text style={styles.emailText}>
-          {email || 'Email not available'}
-        </Text>
+        <Text style={styles.emailText}>{email || 'Email not available'}</Text>
         {/* Afficher l'email de l'utilisateur */}
-   
       </View>
-   
 
       {/* Bottom bar */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity onPress={() => router.push('/welcome')} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => router.push('/welcome')}
+          style={styles.button}
+        >
           <Image
             source={require('../assets/images/home_menu.svg')} // Home button icon
             style={styles.icon}
@@ -44,14 +49,17 @@ const AuthenticatedScreen = ({ email, handleSignOut, navigateHome }) => {
 
 const styles = StyleSheet.create({
   container: {
-   
-    alignItems: 'center',
-    justifyContent: 'space-between', // Permet au bas de rester en bas
+    width: '100%',
+    maxWidth: 400,
     backgroundColor: 'pink',
+    padding: 16,
+    borderRadius: 8,
+    elevation: 3,
+    flex: 1,
+    alignItems: 'center',
   },
   authContainer: {
-    
-    width: '300%',
+    width: '100%',
     padding: 16,
     borderRadius: 8,
     elevation: 3,
@@ -98,7 +106,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
 });
 
 export default AuthenticatedScreen;

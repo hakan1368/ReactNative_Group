@@ -1,7 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { firestore } from './firebase';
 import { addDoc, collection } from '@firebase/firestore';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Home() {
@@ -38,26 +46,24 @@ export default function Home() {
         We aim to teach a new language by practising new words on our Quiz App.
         Start whenever you feel ready and discover your potential today.
       </Text>
-     <View style={styles.OpacityContainer}>
-     <TouchableOpacity onPress={ handleTestKnowledge} >
-      <View style={styles.buttonContainer}>
-          <Image
-            source={require('../assets/images/start.svg')} // Logout button icon
-            style={styles.icon}
-          />
-        </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={  handleLearnNow} >
+      <View style={styles.OpacityContainer}>
+        <TouchableOpacity onPress={handleTestKnowledge}>
           <View style={styles.buttonContainer}>
-          <Image
-            source={require('../assets/images/brain.svg')} // Logout button icon
-            style={styles.icon}
-          />
+            <Image
+              source={require('../assets/images/start.svg')} // Logout button icon
+              style={styles.icon}
+            />
           </View>
         </TouchableOpacity>
-
-     </View>
-      
+        <TouchableOpacity onPress={handleLearnNow}>
+          <View style={styles.buttonContainer}>
+            <Image
+              source={require('../assets/images/brain.svg')} // Logout button icon
+              style={styles.icon}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
 
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>
@@ -85,29 +91,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  buttonContainer : {
-    backgroundColor: '#d3d3d3',  // Grey background
-    width: 60,  // Width of the grey square
-    height: 60,  // Height of the grey square
-    justifyContent: 'center',  // Center the icon inside the square
-    alignItems: 'center',  // Center the icon inside the square
-    borderRadius: 20,  
-
-
-
+  buttonContainer: {
+    backgroundColor: '#d3d3d3', // Grey background
+    width: 60, // Width of the grey square
+    height: 60, // Height of the grey square
+    justifyContent: 'center', // Center the icon inside the square
+    alignItems: 'center', // Center the icon inside the square
+    borderRadius: 20,
   },
 
-
-  OpacityContainer : 
-  {
-
-    flexDirection: 'row',  // This makes the children display horizontally (next to each other)
-    justifyContent: 'space-between',  // You can use this to add space between the buttons or 'center' to align them centrally
-    alignItems: 'center',  // Aligns items vertically in the center
-    width: '100%',  // Takes the full width of the container
-    padding: 120,  // Add padding around the container for spacing
-    height : 'auto',
-
+  OpacityContainer: {
+    flexDirection: 'row', // This makes the children display horizontally (next to each other)
+    justifyContent: 'space-between', // You can use this to add space between the buttons or 'center' to align them centrally
+    alignItems: 'center', // Aligns items vertically in the center
+    width: '100%', // Takes the full width of the container
+    padding: 120, // Add padding around the container for spacing
+    height: 'auto',
   },
   title: {
     fontSize: 30,
@@ -167,4 +166,3 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
-
