@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 
 const SplashScreen = () => {
   return (
@@ -10,6 +10,7 @@ const SplashScreen = () => {
         source={require('../assets/images/logo.webp')}
         style={styles.image}
       />
+      <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
     </View>
   );
 };
@@ -38,6 +39,9 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 8,
     margin: 50,
+  },
+  loader: {
+    marginTop: 20,
   },
 });
 
