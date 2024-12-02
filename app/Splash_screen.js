@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     margin: 50,
   },
+  animation: {
+    width: 10,
+    height: 10,
+  },
   loader: {
     marginTop: 20,
   },

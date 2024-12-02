@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
+import { firestore } from './firebase';
+import { addDoc, collection } from '@firebase/firestore';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Home() {
@@ -36,18 +38,13 @@ export default function Home() {
         We aim to teach a new language by practising new words on our Quiz App.
         Start whenever you feel ready and discover your potential today.
       </Text>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Learn Now"
-          onPress={handleLearnNow}
-          color="#e74c3c"
-        ></Button>
-        <Button
-          title="Test Knowledge"
-          onPress={handleTestKnowledge}
-          color="#e74c3c"
-        ></Button>
-      </View>
+     
+      <TouchableOpacity onPress={handleSubmit} >
+          <Image
+            source={require('../assets/images/start.svg')} // Logout button icon
+            style={styles.icon}
+          />
+        </TouchableOpacity>
 
       {displayMessage ? (
         <Text style={styles.message}>{displayMessage}</Text>
@@ -58,10 +55,10 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+    flex: 1,
     backgroundColor: '#f0f0f0',
   },
   authContainer: {
@@ -71,6 +68,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     elevation: 3,
+    flex: 1,
     alignItems: 'center',
   },
   title: {
@@ -129,4 +127,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'green',
   },
+  icon: {
+    width: 40, // Ajuste la taille de l'icône
+    height: 40,
+    marginTop: 20, // Ajoute de l'espace au-dessus de l'icône pour la déplacer vers le bas
+  },
 });
+
